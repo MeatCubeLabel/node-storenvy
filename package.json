@@ -1,0 +1,19 @@
+{
+  "name": "storenvy",
+  "version": "0.0.0",
+  "description": "Node module to access the Storenvy API",
+  "main": "storenvy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ryanmurakami/node-storenvy.git"
+  },
+  "author": "ryanmurakami",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryanmurakami/node-storenvy/issues"
+  },
+  "homepage": "https://github.com/ryanmurakami/node-storenvy"
+}
