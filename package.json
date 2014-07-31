@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ryanmurakami/node-storenvy/issues"
   },
-  "homepage": "https://github.com/ryanmurakami/node-storenvy"
+  "homepage": "https://github.com/ryanmurakami/node-storenvy",
+  "dependencies": {
+    "colors": "~0.6.2"
+  }
 }
