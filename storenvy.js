@@ -1,7 +1,10 @@
 var https = require('https');
 
-function Storenvy(key) {
-	this.key = key;	
+function Storenvy(creds) {
+	this.key = creds.key;	
+	this.appId = creds.appId;
+	this.appSecret = creds.appSecret;
+	this.redirect = creds.redirect;
 	this.endpointToken = '{endpoint}';
 	this.rootApiUrl = 'https://api.storenvy.com/v1/' + this.endpointToken + '.json?api_key=' + this.key;
 	this.idToken = ':id';
@@ -26,6 +29,67 @@ function Storenvy(key) {
 		webhook: 'webhooks/' + this.idToken
 	}
 }
+
+Storenvy.prototype.complete = function() {
+	if(this.appId &&
+	   this.appSecret &&
+	   this.redirect)
+	return true;
+	
+	console.err('Missing Storenvy credentials.');
+	return false;
+};
+
+Storenvy.prototype.getAuthRedirectUrl = function(read, write) {
+	if(this.complete()) 
+	return 'https://www.storenvy.com/oauth/authorize?client_id=' + this.appId +
+           '&response_type=code' +
+           '&redirect_uri=' + this.redirect +
+           '&scope=user' +
+           (read ? ' store_read' : '') +
+           (write ? ' store_write' : '');
+}
+
+Storenvy.prototype.getAccessToken = function(code, callback) {
+	var se = this,
+		path = '/oauth/token?' +
+      		  'client_id=' + this.appId +
+      		  '&client_secret=' + this.appSecret +
+      		  '&code=' + code + 
+      		  '&grant_type=authorization_code' +
+      		  '&redirect_uri=' + this.redirect,
+      	options = {
+      		hostname: 'api.storenvy.com',
+			path: path,
+			method: 'POST'
+      	}
+
+    var req = https.request(options, function(res) {
+    	var responseData = '';
+    	res.on('data', function(data) {
+    		responseData += data;
+    	});
+    	res.on('end', function() {
+    		se.storeTokenInfo(responseData);
+    		callback();
+    	});
+    	res.on('error', function(err) {
+    		console.log(err);
+    	});
+    });
+    req.end();
+
+    req.on('error', function(e) {
+	  console.error(e);
+	});
+};
+
+Storenvy.prototype.storeTokenInfo = function(responseData) {
+	var resObj = JSON.parse(responseData);
+	this.access_token = resObj.access_token;
+	this.refresh_token = resObj.refresh_token;
+	this.expires_in = resObj.expires_in;
+};
 
 Storenvy.prototype.retrieve = function(endpoint, callback) {
 	https.get(
@@ -156,4 +220,4 @@ Storenvy.prototype.getWebhook = function(id, callback) {
 	this.retrieve(url, callback);
 };
 
-exports.Storenvy = Storenvy;
+module.exports = Storenvy;
