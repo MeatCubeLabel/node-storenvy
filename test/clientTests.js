@@ -1,4 +1,10 @@
 
+function goodRes(obj) {
+	return !obj.error && 
+		   obj.meta.code === 200 &&
+		   obj.data;
+}
+
 var tests = {
 	runAll: function(seClient) {
 		tests.seClient = seClient;
@@ -11,10 +17,9 @@ var tests = {
 
 	userTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getUserInfo(function(data) { 
+		seClient.getUserInfo(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.id)
 				console.log('User Info Test passed.');
 			else 
@@ -24,10 +29,9 @@ var tests = {
 
 	storeInfoTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getStoreInfo(function(data) { 
+		seClient.getStoreInfo(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.name &&
 				obj.data.url)
 				console.log('Store Info Test passed.');
@@ -38,10 +42,9 @@ var tests = {
 
 	storeVisitsTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getStoreVisits(function(data) { 
+		seClient.getStoreVisits(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.weekly_visits)
 				console.log('Store Visits Test passed.');
 			else 
@@ -51,10 +54,9 @@ var tests = {
 
 	storeTemplatesTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getStoreTemplates(function(data) { 
+		seClient.getStoreTemplates(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.templates)
 				console.log('Store Templates Test passed.');
 			else 
@@ -64,10 +66,9 @@ var tests = {
 
 	ordersTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getOrders(function(data) { 
+		seClient.getOrders(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.orders)
 				console.log('Orders Test passed.');
 			else 
@@ -81,10 +82,9 @@ var tests = {
 	orderTest: function(seClient, orderId) {
 		if(!orderId) return;
 		seClient = seClient || tests.seClient;
-		seClient.getOrder(orderId, function(data) { 
+		seClient.getOrder(orderId, function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.id === orderId)
 				console.log('Order Test passed.');
 			else 
@@ -98,10 +98,9 @@ var tests = {
 	orderProductsTest: function(seClient, orderId) {
 		if(!orderId) return;
 		seClient = seClient || tests.seClient;
-		seClient.getOrderProducts(orderId, function(data) { 
+		seClient.getOrderProducts(orderId, function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.products)
 				console.log('Order Products Test passed.');
 			else 
@@ -111,10 +110,9 @@ var tests = {
 
 	productsTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getProducts(function(data) { 
+		seClient.getProducts(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.products)
 				console.log('Products Test passed.');
 			else 
@@ -128,10 +126,9 @@ var tests = {
 	productTest: function(seClient, productId) {
 		if(!productId) return;
 		seClient = seClient || tests.seClient;
-		seClient.getProduct(productId, function(data) { 
+		seClient.getProduct(productId, function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.id === productId)
 				console.log('Product Test passed.');
 			else 
@@ -141,10 +138,9 @@ var tests = {
 
 	collectionsTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getCollections(function(data) { 
+		seClient.getCollections(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.collections)
 				console.log('Collections Test passed.');
 			else 
@@ -158,10 +154,9 @@ var tests = {
 	collectionTest: function(seClient, collectionId) {
 		if(!collectionId) return;
 		seClient = seClient || tests.seClient;
-		seClient.getCollection(collectionId, function(data) { 
+		seClient.getCollection(collectionId, function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.id === collectionId)
 				console.log('Collection Test passed.');
 			else 
@@ -171,10 +166,9 @@ var tests = {
 
 	shippingGroupsTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getShippingGroups(function(data) { 
+		seClient.getShippingGroups(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.shipping_groups)
 				console.log('Shipping Groups Test passed.');
 			else 
@@ -188,10 +182,9 @@ var tests = {
 	shippingGroupTest: function(seClient, groupId) {
 		if(!groupId) return;
 		seClient = seClient || tests.seClient;
-		seClient.getShippingGroup(groupId, function(data) { 
+		seClient.getShippingGroup(groupId, function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.id === groupId)
 				console.log('Shipping Group Test passed.');
 			else 
@@ -206,10 +199,9 @@ var tests = {
 
 	shippingClassesTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getShippingClasses(function(data) { 
+		seClient.getShippingClasses(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.shipping_classes)
 				console.log('Shipping Classes Test passed.');
 			else 
@@ -223,10 +215,9 @@ var tests = {
 	shippingClassTest: function(seClient, classId) {
 		if(!classId) return;
 		seClient = seClient || tests.seClient;
-		seClient.getShippingClass(classId, function(data) { 
+		seClient.getShippingClass(classId, function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.id === classId)
 				console.log('Shipping Class Test passed.');
 			else 
@@ -237,10 +228,9 @@ var tests = {
 	shippingRatesTest: function(seClient, groupId, classId) {
 		if(!groupId && !classId) return;
 		seClient = seClient || tests.seClient;
-		seClient.getShippingRate(groupId, classId, function(data) { 
+		seClient.getShippingRate(groupId, classId, function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.first_item_in_cents &&
 				obj.data.shipping_group_id === groupId)
 				console.log('Shipping Rates Test passed.');
@@ -251,10 +241,9 @@ var tests = {
 
 	webhooksTest: function(seClient) {
 		seClient = seClient || tests.seClient;
-		seClient.getWebhooks(function(data) { 
+		seClient.getWebhooks(function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.webhooks)
 				console.log('Webhooks Test passed.');
 			else 
@@ -268,10 +257,9 @@ var tests = {
 	webhookTest: function(seClient, webhookId) {
 		if(!webhookId) return;
 		seClient = seClient || tests.seClient;
-		seClient.getWebhook(webhookId, function(data) { 
+		seClient.getWebhook(webhookId, function(err, data) { 
 			var obj = JSON.parse(data);
-			if(!obj.error && 
-				obj.meta.code === 200 &&
+			if(goodRes(obj) &&
 				obj.data.id === webhookId)
 				console.log('Webhook Test passed.');
 			else 
