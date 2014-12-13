@@ -1,14 +1,15 @@
 node-storenvy
 =============
 
-A Node client to access the Storenvy API
+###A Node wrapper to the Storenvy API
+Supports OAuth authentication.
 
-Currently only supporting API key authentication.
+Current Version: 0.3.0
+
+##Roadmap
+- Add more examples (express)
+- Write better documentation
+- Add POST/PUT/DELETE endpoints to Client
 
 ##Working
-- ~~Adding more endpoints.~~
-  - all GETs are done
-- ~~Add OAuth 2 authentication.~~
-  - done, but the oauth dance is browser-based, so I'll figure out a flow for that.
-- Add POST/PUT/DELETE endpoints
-- Figure out public tests (private testing for the moment)
+- Sent some questions to the Storenvy team about non-working API endpoints
