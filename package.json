@@ -1,8 +1,8 @@
 {
   "name": "storenvy",
-  "version": "0.0.0",
-  "description": "Node module to access the Storenvy API",
-  "main": "storenvy.js",
+  "version": "0.3.0",
+  "description": "Node wrapper to access the Storenvy API",
+  "main": "lib/storenvy.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,14 +11,11 @@
     "url": "git://github.com/ryanmurakami/node-storenvy.git"
   },
   "author": "ryanmurakami",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ryanmurakami/node-storenvy/issues"
   },
   "homepage": "https://github.com/ryanmurakami/node-storenvy",
-  "dependencies": {
-    "colors": "~0.6.2"
-  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.10.0",

@@ -15,7 +15,7 @@ Current Version: 0.3.0
 - Sent some questions to the Storenvy team about non-working API endpoints
 
 #Getting Started
-Download node-storenvy via npm (Coming soon!)
+Download node-storenvy via npm
 ```shell
 npm install storenvy
 ```
