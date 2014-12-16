@@ -1,10 +1,8 @@
-node-storenvy
+node-storenvy v0.3.0
 =============
-
+[![NPM version](http://img.shields.io/npm/v/storenvy.svg?style=flat)](https://www.npmjs.org/package/storenvy)
 ####A Node wrapper to the Storenvy API
-Supports OAuth authentication.
-
-Current Version: 0.3.0
+Supports OAuth 2 authentication.
 
 ##Roadmap
 - Add more examples (express)
