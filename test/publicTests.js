@@ -65,16 +65,14 @@ var Storenvy = require('../lib/storenvy'),
 		},
 
 		collectionsPerPageTest: function() {
-			// pagination is not currently working for the API
-			//
-			// se.public.getCollections('meatcube', function(err, data) {
-			// 	if(err) console.err(err);
-			// 	var obj = JSON.parse(data);
-			// 	if(obj.collections.length === 3)
-			// 		console.log('Collections Per Page Test passed.');
-			// 	else 
-			// 		console.log('Collections Per Page Test failed with ' + data);
-			// }, 1, 3);
+			se.public.getCollections('meatcube', function(err, data) {
+				if(err) console.err(err);
+				var obj = JSON.parse(data);
+				if(obj.collections.length === 3)
+					console.log('Collections Per Page Test passed.');
+				else 
+					console.log('Collections Per Page Test failed with ' + data);
+			}, 1, 3);
 		},
 
 		collectionTest: function() {
@@ -87,18 +85,6 @@ var Storenvy = require('../lib/storenvy'),
 					console.log('Collection Test failed with ' + data);
 			});
 		}
-
-		//this also seems to not be working currently
-		// variantTest: function() {
-		// 	se.public.getVariants('meatcube', 125448, function(err, data) {
-		// 		if(err) console.err(err);
-		// 		var obj = JSON.parse(data);
-		// 		if(obj.id === 125448)
-		// 			console.log('Collection Test passed.');
-		// 		else 
-		// 			console.log('Collection Test failed with ' + data);
-		// 	});
-		// }
 	};
 
 module.exports = tests;
