@@ -1,4 +1,5 @@
-var Hapi = require('hapi'),
+var fs = require('fs'),
+	Hapi = require('hapi'),
 	Storenvy = require('../lib/storenvy'),
 	ClientTests = require('./clientTests'),
 	PublicTests = require('./publicTests');
@@ -6,8 +7,10 @@ var Hapi = require('hapi'),
 var server = new Hapi.Server();
 server.connection({port: 8080});
 
-var APP_ID = '<YOUR_APPLICATION_ID';
-var APP_SECRET = '<YOUR_APP_SECRET>';
+var fileData = JSON.parse(fs.readFileSync('creds.json').toString());
+
+var APP_ID = fileData.APP_ID;
+var APP_SECRET = fileData.APP_SECRET;
 var REDIRECT_URL = 'http://localhost:8080/';
 
 var globalClient;
@@ -44,6 +47,7 @@ server.route({
 	handler: function(request, reply) {
 		ClientTests.runAll(globalClient);
 		PublicTests.runAll();
+		reply('');
 	}
 });
 
