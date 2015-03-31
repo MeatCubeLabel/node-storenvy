@@ -8,5 +8,5 @@ node_js:
   - "iojs"
   - "iojs-v1.0.4" 
 "scripts": {
-  "test": "grunt test"
+  "test": "jasmine"
 }
