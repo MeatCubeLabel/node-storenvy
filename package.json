@@ -4,6 +4,7 @@
   "description": "Node wrapper to access the Storenvy API",
   "main": "lib/storenvy.js",
   "scripts": {
+    "preinstall": "npm install -g jasmine grunt",
     "test": "jasmine"
   },
   "repository": {
