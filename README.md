@@ -5,13 +5,15 @@ node-storenvy v0.3.0
 ####A Node wrapper to the Storenvy API
 Supports OAuth 2 authentication.
 
+##Changes in v0.4.0
+- All endpoints implemented
+- Fully unit tested suite
+- New build process
+
 ##Roadmap
+- Simplify API
 - Add more examples (express)
 - Write better documentation
-- Add POST/PUT/DELETE endpoints to Client
-
-##Working
-- Sent some questions to the Storenvy team about non-working API endpoints
 
 #Getting Started
 Download node-storenvy via npm
