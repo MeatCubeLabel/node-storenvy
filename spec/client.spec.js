@@ -9,6 +9,13 @@ describe('Client', function() {
 		testOrderId = '34543',
 		testFulfillmentId = '858640',
 		testProductId = '485343',
+		testVariantId = '9938495',
+		testCollectionId = '456322256',
+		testShippingGroupId = '6544859',
+		testShippingClassId = '188734',
+		testWebhookId = '666',
+		testClientId = '854204212853',
+		testSecret = 'FS8333FCVNO',
 		testCallback = function() { return 23; },
 		testUserInfoUrl = 'https://api.storenvy.com/v1/me.json?access_token=',
 		testStoreInfoUrl = 'https://api.storenvy.com/v1/store.json?access_token=',
@@ -30,11 +37,35 @@ describe('Client', function() {
 		testGetProductsUrl = 'https://api.storenvy.com/v1/products.json?access_token=',
 		testGetProductUrl = 'https://api.storenvy.com/v1/products/' + testProductId + '.json?access_token=',
 		testCreateProductUrl = 'https://api.storenvy.com/v1/products?access_token=',
-		testUpdateProductUrl = 'https://api.storenvy.com/v1/products/' + testProductId + '?access_token=';
+		testUpdateProductUrl = 'https://api.storenvy.com/v1/products/' + testProductId + '?access_token=',
+		testCreateVariantUrl = 'https://api.storenvy.com/v1/products/' + testProductId + '/variants?access_token=',
+		testGetVariantUrl = 'https://api.storenvy.com/v1/products/' + testProductId + '/variants/' + testVariantId + '.json?access_token=',
+		testUpdateVariantUrl = 'https://api.storenvy.com/v1/products/' + testProductId + '/variants/' + testVariantId + '?access_token=',
+		testGetCollectionsUrl = 'https://api.storenvy.com/v1/collections.json?access_token=',
+		testGetCollectionUrl = 'https://api.storenvy.com/v1/collections/' + testCollectionId + '.json?access_token=',
+		testCreateCollectionUrl = 'https://api.storenvy.com/v1/collections?access_token=',
+		testUpdateCollectionUrl = 'https://api.storenvy.com/v1/collections/' + testCollectionId + '?access_token=',
+		testGetShippingGroupsUrl = 'https://api.storenvy.com/v1/shipping_groups.json?access_token=',
+		testGetShippingGroupUrl = 'https://api.storenvy.com/v1/shipping_groups/' + testShippingGroupId + '.json?access_token=',
+		testCreateShippingGroupUrl = 'https://api.storenvy.com/v1/shipping_groups?access_token=',
+		testUpdateShippingGroupUrl = 'https://api.storenvy.com/v1/shipping_groups/' + testShippingGroupId + '?access_token=',
+		testGetShippingClassesUrl = 'https://api.storenvy.com/v1/shipping_classes.json?access_token=',
+		testGetShippingClassUrl = 'https://api.storenvy.com/v1/shipping_classes/' + testShippingClassId + '.json?access_token=',
+		testCreateShippingClassUrl = 'https://api.storenvy.com/v1/shipping_classes?access_token=',
+		testUpdateShippingClassUrl = 'https://api.storenvy.com/v1/shipping_classes/' + testShippingClassId + '?access_token=',
+		testGetShippingRateUrl = 'https://api.storenvy.com/v1/shipping_rate.json?access_token=',
+		testUpdateShippingRateUrl = 'https://api.storenvy.com/v1/shipping_rate?access_token=',
+		testGetWebhooksUrl = 'https://api.storenvy.com/v1/webhooks.json?access_token=',
+		testGetWebhookUrl = 'https://api.storenvy.com/v1/webhooks/' + testWebhookId + '.json?access_token=',
+		testCreateWebhookUrl = 'https://api.storenvy.com/v1/webhooks?access_token=',
+		testUpdateWebhookUrl = 'https://api.storenvy.com/v1/webhooks/' + testWebhookId + '?access_token=',
+		testCreateAccountUrl = 'https://api.storenvy.com/v1/application/stores?access_token=';
 
 	beforeEach(function() {
 		client = new Client({
-			access_token: credAccessToken
+			access_token: credAccessToken,
+			appId: testClientId,
+			appSecret: testSecret
 		});
 		spyOn(Client.prototype, 'get');
 		spyOn(Client.prototype, 'post');
@@ -530,15 +561,536 @@ describe('Client', function() {
 	});
 
 	describe('#deleteProduct()', function() {
-		it('should call get with the right url', function() {
+		it('should call delete with the right url', function() {
 			var expectedUrl = testUpdateProductUrl + credAccessToken;
 			client.deleteProduct(testProductId, testCallback);
 			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
 		});
-		it('should call get with the right url with a passed access token', function() {
+		it('should call delete with the right url with a passed access token', function() {
 			var expectedUrl = testUpdateProductUrl + testAccessToken;			
 			client.deleteProduct(testProductId, testCallback, testAccessToken);
 			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#createVariant()', function() {
+		it('should call post with the right url', function() {
+			var productId = testProductId,
+				name = 'awesome thing',
+				full_quantity = '10',
+				in_stock = '8',
+				expectedUrl = testCreateVariantUrl + credAccessToken + '&name=' +
+					name + '&full_quantity=' + full_quantity + '&in_stock=' + in_stock;
+			client.createVariant(productId, name, full_quantity, in_stock, null, testCallback);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call post with the right url with a passed access token', function() {
+			var productId = testProductId,
+				name = 'awesome thing',
+				full_quantity = '10',
+				in_stock = '8',
+				expectedUrl = testCreateVariantUrl + testAccessToken + '&name=' +
+					name + '&full_quantity=' + full_quantity + '&in_stock=' + in_stock;
+			client.createVariant(productId, name, full_quantity, in_stock, null, testCallback, testAccessToken);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call post with the right url when passed attributes', function() {
+			var productId = testProductId,
+				name = 'awesome thing',
+				full_quantity = '10',
+				in_stock = '8',
+				position = 'top',
+				sku = 'FGHF88798',
+				expectedUrl = testCreateVariantUrl + credAccessToken + '&position=' +
+					position + '&sku=' + sku + '&name=' + name + '&full_quantity=' + 
+					full_quantity + '&in_stock=' + in_stock,
+				attrs = {
+					position: position,
+					sku: sku
+				};
+			client.createVariant(productId, name, full_quantity, in_stock, attrs, testCallback);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getVariant()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetVariantUrl + credAccessToken;
+			client.getVariant(testProductId, testVariantId, testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetVariantUrl + testAccessToken;			
+			client.getVariant(testProductId, testVariantId, testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#updateVariant()', function() {
+		it('should call put with the right url', function() {
+			var position = 'top',
+				in_stock = 2,
+				expectedUrl = testUpdateVariantUrl + credAccessToken + 
+					'&position=' + position + '&in_stock=' + in_stock,
+				attrs = {
+					position: position,
+					in_stock: in_stock
+				};
+			client.updateVariant(testProductId, testVariantId, attrs, testCallback);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call put with the right url with a passed access token', function() {
+			var position = 'top',
+				in_stock = 2,
+				expectedUrl = testUpdateVariantUrl + testAccessToken + 
+					'&position=' + position + '&in_stock=' + in_stock,
+				attrs = {
+					position: position,
+					in_stock: in_stock
+				};
+			client.updateVariant(testProductId, testVariantId, attrs, testCallback, testAccessToken);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#deleteVariant()', function() {
+		it('should call delete with the right url', function() {
+			var expectedUrl = testUpdateVariantUrl + credAccessToken;
+			client.deleteVariant(testProductId, testVariantId, testCallback);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call delete with the right url with a passed access token', function() {
+			var expectedUrl = testUpdateVariantUrl + testAccessToken;			
+			client.deleteVariant(testProductId, testVariantId, testCallback, testAccessToken);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getCollections()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetCollectionsUrl + credAccessToken;
+			client.getCollections(testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetCollectionsUrl + testAccessToken;			
+			client.getCollections(testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getCollection()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetCollectionUrl + credAccessToken;
+			client.getCollection(testCollectionId, testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetCollectionUrl + testAccessToken;			
+			client.getCollection(testCollectionId, testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#createCollection()', function() {
+		it('should call post with the right url', function() {
+			var name = 'awesome collection',
+				expectedUrl = testCreateCollectionUrl + credAccessToken + '&name=' +
+					name;
+			client.createCollection(name, null, testCallback);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call post with the right url with a passed access token', function() {
+			var name = 'awesome collection',
+				expectedUrl = testCreateCollectionUrl + testAccessToken + '&name=' +
+					name;
+			client.createCollection(name, null, testCallback, testAccessToken);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call post with the right url when passed attributes', function() {
+			var name = 'awesome collection',
+				photo = 'image.jpg',
+				hide_in_storefront_navigation = 'true',
+				expectedUrl = testCreateCollectionUrl + credAccessToken + '&photo=' +
+					photo + '&hide_in_storefront_navigation=' + hide_in_storefront_navigation + 
+					'&name=' + name,
+				attrs = {
+					photo: photo,
+					hide_in_storefront_navigation: hide_in_storefront_navigation
+				};
+			client.createCollection(name, attrs, testCallback);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#updateCollection()', function() {
+		it('should call put with the right url', function() {
+			var name = 'awesome product',
+				position = 'bottom',
+				products = [334,3232,553232],
+				expectedUrl = testUpdateCollectionUrl + credAccessToken + 
+					'&position=' + position + '&products=' + products +
+					'&name=' + name,
+				attrs = {
+					position: position,
+					products: products
+				};
+			client.updateCollection(testCollectionId, name, attrs, testCallback);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call put with the right url with a passed access token', function() {
+			var name = 'awesome product',
+				position = 'bottom',
+				products = [334,3232,553232],
+				expectedUrl = testUpdateCollectionUrl + testAccessToken + 
+					'&position=' + position + '&products=' + products +
+					'&name=' + name,
+				attrs = {
+					position: position,
+					products: products
+				};
+			client.updateCollection(testCollectionId, name, attrs, testCallback, testAccessToken);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#deleteCollection()', function() {
+		it('should call delete with the right url', function() {
+			var expectedUrl = testUpdateCollectionUrl + credAccessToken;
+			client.deleteCollection(testCollectionId, testCallback);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call delete with the right url with a passed access token', function() {
+			var expectedUrl = testUpdateCollectionUrl + testAccessToken;			
+			client.deleteCollection(testCollectionId, testCallback, testAccessToken);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getShippingGroups()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetShippingGroupsUrl + credAccessToken;
+			client.getShippingGroups(testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetShippingGroupsUrl + testAccessToken;			
+			client.getShippingGroups(testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getShippingGroup()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetShippingGroupUrl + credAccessToken;
+			client.getShippingGroup(testShippingGroupId, testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetShippingGroupUrl + testAccessToken;			
+			client.getShippingGroup(testShippingGroupId, testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#createShippingGroup()', function() {
+		it('should call post with the right url', function() {
+			var name = 'awesome shipping group',
+				rates = [{"shipping_class_id": 923919, "first_item_in_cents" : 699, "additional_item_in_cents" : 399}],
+				expectedUrl = testCreateShippingGroupUrl + credAccessToken + '&name=' +
+					name + '&rates=' + rates;
+			client.createShippingGroup(name, rates, testCallback);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call post with the right url with a passed access token', function() {
+			var name = 'awesome shipping group',
+				rates = [{"shipping_class_id": 923919, "first_item_in_cents" : 699, "additional_item_in_cents" : 399}],
+				expectedUrl = testCreateShippingGroupUrl + testAccessToken + '&name=' +
+					name + '&rates=' + rates;
+			client.createShippingGroup(name, rates, testCallback, testAccessToken);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#updateShippingGroup()', function() {
+		it('should call put with the right url', function() {
+			var name = 'awesome shipping group',
+				rates = [{"shipping_class_id": 923919, "first_item_in_cents" : 699, "additional_item_in_cents" : 399}],
+				expectedUrl = testUpdateShippingGroupUrl + credAccessToken + 
+					'&name=' + name + '&rates=' + rates;
+			client.updateShippingGroup(testShippingGroupId, name, rates, testCallback);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call put with the right url with a passed access token', function() {
+			var name = 'awesome shipping group',
+				rates = [{"shipping_class_id": 923919, "first_item_in_cents" : 699, "additional_item_in_cents" : 399}],
+				expectedUrl = testUpdateShippingGroupUrl + testAccessToken + 
+					'&name=' + name + '&rates=' + rates;
+			client.updateShippingGroup(testShippingGroupId, name, rates, testCallback, testAccessToken);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#deleteShippingGroup()', function() {
+		it('should call delete with the right url', function() {
+			var expectedUrl = testUpdateShippingGroupUrl + credAccessToken;
+			client.deleteShippingGroup(testShippingGroupId, testCallback);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call delete with the right url with a passed access token', function() {
+			var expectedUrl = testUpdateShippingGroupUrl + testAccessToken;			
+			client.deleteShippingGroup(testShippingGroupId, testCallback, testAccessToken);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getShippingClasses()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetShippingClassesUrl + credAccessToken;
+			client.getShippingClasses(testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetShippingClassesUrl + testAccessToken;			
+			client.getShippingClasses(testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getShippingClass()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetShippingClassUrl + credAccessToken;
+			client.getShippingClass(testShippingClassId, testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetShippingClassUrl + testAccessToken;			
+			client.getShippingClass(testShippingClassId, testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#createShippingClass()', function() {
+		it('should call post with the right url', function() {
+			var name = 'awesome shipping class',
+				rates = [{"shipping_group_id": 923919, "first_item_in_cents" : 699, "additional_item_in_cents" : 399}],
+				countries = ['US','CA'],
+				expectedUrl = testCreateShippingClassUrl + credAccessToken + '&name=' +
+					name + '&rates=' + rates + '&countries=' + countries;
+			client.createShippingClass(name, rates, countries, testCallback);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call post with the right url with a passed access token', function() {
+			var name = 'awesome shipping class',
+				rates = [{"shipping_group_id": 923919, "first_item_in_cents" : 699, "additional_item_in_cents" : 399}],
+				countries = ['US','CA'],
+				expectedUrl = testCreateShippingClassUrl + testAccessToken + '&name=' +
+					name + '&rates=' + rates + '&countries=' + countries;
+			client.createShippingClass(name, rates, countries, testCallback, testAccessToken);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#updateShippingClass()', function() {
+		it('should call put with the right url', function() {
+			var name = 'awesome shipping class',
+				rates = [{"shipping_group_id": 923919, "first_item_in_cents" : 699, "additional_item_in_cents" : 399}],
+				countries = ['US','CA'],
+				expectedUrl = testUpdateShippingClassUrl + credAccessToken + 
+					'&name=' + name + '&rates=' + rates + '&countries=' + countries;
+			client.updateShippingClass(testShippingClassId, name, rates, countries, testCallback);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call put with the right url with a passed access token', function() {
+			var name = 'awesome shipping class',
+				rates = [{"shipping_group_id": 923919, "first_item_in_cents" : 699, "additional_item_in_cents" : 399}],
+				countries = ['US','CA'],
+				expectedUrl = testUpdateShippingClassUrl + testAccessToken + 
+					'&name=' + name + '&rates=' + rates + '&countries=' + countries;
+			client.updateShippingClass(testShippingClassId, name, rates, countries, testCallback, testAccessToken);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#deleteShippingClass()', function() {
+		it('should call delete with the right url', function() {
+			var expectedUrl = testUpdateShippingClassUrl + credAccessToken;
+			client.deleteShippingClass(testShippingClassId, testCallback);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call delete with the right url with a passed access token', function() {
+			var expectedUrl = testUpdateShippingClassUrl + testAccessToken;			
+			client.deleteShippingClass(testShippingClassId, testCallback, testAccessToken);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getShippingRate()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetShippingRateUrl + credAccessToken + 
+				'&shipping_group_id=' + testShippingGroupId + 
+				'&shipping_class_id=' + testShippingClassId;
+			client.getShippingRate(testShippingGroupId, testShippingClassId, testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetShippingRateUrl + testAccessToken + 
+				'&shipping_group_id=' + testShippingGroupId + 
+				'&shipping_class_id=' + testShippingClassId			
+			client.getShippingRate(testShippingGroupId, testShippingClassId, testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should throw an exception if no shipping_group_id is passed', function() {
+			expect(function() {
+				client.getShippingRate(null, testShippingClassId, testCallback)
+			}).toThrow();
+		});
+		it('should throw an exception if no shipping_class_id is passed', function() {
+			expect(function() {
+				client.getShippingRate(testShippingGroupId, null, testCallback)
+			}).toThrow();
+		});
+		it('should throw an exception if nothing is passed', function() {
+			expect(client.getShippingRate).toThrow();
+		});
+	});
+
+	describe('#updateShippingRate()', function() {
+		it('should call put with the right url', function() {
+			var first_item_in_cents = 399,
+				additional_item_in_cents = 50,
+				expectedUrl = testUpdateShippingRateUrl + credAccessToken + 
+					'&shipping_group_id=' + testShippingGroupId + 
+					'&shipping_class_id=' + testShippingClassId +
+					'&first_item_in_cents=' + first_item_in_cents +
+					'&additional_item_in_cents=' + additional_item_in_cents;
+			client.updateShippingRate(testShippingGroupId, testShippingClassId, 
+				first_item_in_cents, additional_item_in_cents, testCallback);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call put with the right url with a passed access token', function() {
+			var first_item_in_cents = 399,
+				additional_item_in_cents = 50,
+				expectedUrl = testUpdateShippingRateUrl + testAccessToken + 
+					'&shipping_group_id=' + testShippingGroupId + 
+					'&shipping_class_id=' + testShippingClassId +
+					'&first_item_in_cents=' + first_item_in_cents +
+					'&additional_item_in_cents=' + additional_item_in_cents;
+			client.updateShippingRate(testShippingGroupId, testShippingClassId, 
+				first_item_in_cents, additional_item_in_cents, testCallback, testAccessToken);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getWebhooks()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetWebhooksUrl + credAccessToken;
+			client.getWebhooks(testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetWebhooksUrl + testAccessToken;			
+			client.getWebhooks(testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#getWebhook()', function() {
+		it('should call get with the right url', function() {
+			var expectedUrl = testGetWebhookUrl + credAccessToken;
+			client.getWebhook(testWebhookId, testCallback);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call get with the right url with a passed access token', function() {
+			var expectedUrl = testGetWebhookUrl + testAccessToken;			
+			client.getWebhook(testWebhookId, testCallback, testAccessToken);
+			expect(client.get).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#createWebhook()', function() {
+		it('should call post with the right url', function() {
+			var url = 'http://myhomepage.com',
+				events = ['order/created', 'order/updated'],
+				expectedUrl = testCreateWebhookUrl + credAccessToken + '&url=' +
+					url + '&events=' + events;
+			client.createWebhook(url, events, testCallback);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call post with the right url with a passed access token', function() {
+			var url = 'http://myhomepage.com',
+				events = ['order/created', 'order/updated'],
+				expectedUrl = testCreateWebhookUrl + testAccessToken + '&url=' +
+					url + '&events=' + events;
+			client.createWebhook(url, events, testCallback, testAccessToken);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#updateWebhook()', function() {
+		it('should call put with the right url', function() {
+			var url = 'http://myhomepage.com',
+				events = ['order/created', 'order/updated'],
+				expectedUrl = testUpdateWebhookUrl + credAccessToken + '&url=' +
+					url + '&events=' + events;
+			client.updateWebhook(testWebhookId, url, events, testCallback);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call put with the right url with a passed access token', function() {
+			var url = 'http://myhomepage.com',
+				events = ['order/created', 'order/updated'],
+				expectedUrl = testUpdateWebhookUrl + testAccessToken + '&url=' +
+					url + '&events=' + events;
+			client.updateWebhook(testWebhookId, url, events, testCallback, testAccessToken);
+			expect(client.put).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#deleteWebhook()', function() {
+		it('should call delete with the right url', function() {
+			var expectedUrl = testUpdateWebhookUrl + credAccessToken;
+			client.deleteWebhook(testWebhookId, testCallback);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call delete with the right url with a passed access token', function() {
+			var expectedUrl = testUpdateWebhookUrl + testAccessToken;			
+			client.deleteWebhook(testWebhookId, testCallback, testAccessToken);
+			expect(client.delete).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+	});
+
+	describe('#createAccount()', function() {
+		it('should call post with the right url', function() {
+			var name = 'my cool store',
+				subdomain = 'teh_cool3st',
+				paypal_email = 'payme@snailmail.com',
+				owner_login = 'unome',
+				owner_email = 'myemail@snailmail.com',
+				owner_password = 'p@ssw0rd',
+				expectedUrl = testCreateAccountUrl + credAccessToken + '&client_id=' +
+					testClientId + '&secret=' + testSecret + '&name=' + name +
+					'&subdomain=' + subdomain + '&paypal_email=' + paypal_email +
+					'&owner[login]=' + owner_login + '&owner[email]=' + owner_email +
+					'&owner[password]=' + owner_password;
+			client.createAccount(name, subdomain, paypal_email, owner_login, owner_email,
+				owner_password, testCallback);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
+		});
+		it('should call post with the right url with a passed access token', function() {
+			var name = 'my cool store',
+				subdomain = 'teh_cool3st',
+				paypal_email = 'payme@snailmail.com',
+				owner_login = 'unome',
+				owner_email = 'myemail@snailmail.com',
+				owner_password = 'p@ssw0rd',
+				expectedUrl = testCreateAccountUrl + testAccessToken + '&client_id=' +
+					testClientId + '&secret=' + testSecret + '&name=' + name +
+					'&subdomain=' + subdomain + '&paypal_email=' + paypal_email +
+					'&owner[login]=' + owner_login + '&owner[email]=' + owner_email +
+					'&owner[password]=' + owner_password;
+			client.createAccount(name, subdomain, paypal_email, owner_login, owner_email,
+				owner_password, testCallback, testAccessToken);
+			expect(client.post).toHaveBeenCalledWith(expectedUrl, testCallback);
 		});
 	});
 });
