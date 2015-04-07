@@ -1,7 +1,7 @@
 node-storenvy v0.4.0
 =============
 [![NPM version](http://img.shields.io/npm/v/storenvy.svg?style=flat)](https://www.npmjs.org/package/storenvy)
-[![Build Status](https://travis-ci.org/ryanmurakami/node-storenvy.svg?branch=develop)](https://travis-ci.org/ryanmurakami/node-storenvy)
+[![Build Status](https://travis-ci.org/ryanmurakami/node-storenvy.svg?branch=develop)](https://travis-ci.org/ryanmurakami/node-storenvy)[![Inline docs](http://inch-ci.org/github/ryanmurakami/node-storenvy.svg?branch=master)](http://inch-ci.org/github/ryanmurakami/node-storenvy)
 ####A Node wrapper to the Storenvy API
 Supports OAuth 2 authentication.
 
