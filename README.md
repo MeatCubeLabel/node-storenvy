@@ -12,6 +12,7 @@ Supports OAuth 2 authentication.
 
 ##Roadmap
 - Simplify API
+- Major refactor
 - Add more examples (express)
 - Write better documentation
 
