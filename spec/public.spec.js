@@ -1,20 +1,8 @@
-var Public = require('../lib/public.js');
+var Public = require('../lib/public.js'),
+	test = require('./support/props.js');
 
 describe('Public', function() {
-	var public,
-		testSubdomain = 'meatcube',
-		testPath = 'myPath.json',
-		testPage = '3',
-		testPerPage = '10',
-		testProductId = '1839494',
-		testCollectionId = '584339494',
-		testCallback = function() {},
-		testBasicUrl = 'http://' + testSubdomain + '.storenvy.com/' + testPath,
-		testGetStoreInfoUrl = 'http://' + testSubdomain + '.storenvy.com/store.json',
-		testGetProductsUrl = 'http://' + testSubdomain + '.storenvy.com/products.json',
-		testGetProductUrl = 'http://' + testSubdomain + '.storenvy.com/products/' + testProductId + '.json',
-		testGetCollectionsUrl = 'http://' + testSubdomain + '.storenvy.com/collections.json',
-		testGetCollectionUrl = 'http://' + testSubdomain + '.storenvy.com/collections/' + testCollectionId + '.json';
+	var public;
 
 	beforeEach(function() {
 		public = new Public();
@@ -23,74 +11,74 @@ describe('Public', function() {
 
 	describe('#urlBuilder()', function() {
 		it('should take a subdomain and path and return the right url', function() {
-			expect(public.urlBuilder(testSubdomain, testPath)).toEqual(testBasicUrl);
+			expect(public.urlBuilder(test.subdomain, test.path)).toEqual(test.basicUrl);
 		});
 	});
 
 	describe('#getStoreInfo()', function() {
 		it('should call retrieve with the right url', function() {
-			public.getStoreInfo(testSubdomain, testCallback)
-			expect(public.retrieve).toHaveBeenCalledWith(testGetStoreInfoUrl, testCallback);
+			public.getStoreInfo(test.subdomain, test.callback)
+			expect(public.retrieve).toHaveBeenCalledWith(test.getStoreInfoUrl, test.callback);
 		});
 	});
 
 	describe('#getProducts()', function() {
 		it('should call retrieve with the right url', function() {
-			var expectedUrl = testGetProductsUrl + '?';
-			public.getProducts(testSubdomain, testCallback);
-			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, testCallback);
+			var expectedUrl = test.publicGetProductsUrl + '?';
+			public.getProducts(test.subdomain, test.callback);
+			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 		it('should call retrieve with the right url if given a page', function() {
-			var expectedUrl = testGetProductsUrl + '?page=' + testPage + '&';
-			public.getProducts(testSubdomain, testCallback, testPage);
-			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, testCallback);
+			var expectedUrl = test.publicGetProductsUrl + '?page=' + test.page + '&';
+			public.getProducts(test.subdomain, test.callback, test.page);
+			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 		it('should call retrieve with the right url if given a perPage', function() {
-			var expectedUrl = testGetProductsUrl + '?per_page=' + testPerPage;
-			public.getProducts(testSubdomain, testCallback, null, testPerPage);
-			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, testCallback);
+			var expectedUrl = test.publicGetProductsUrl + '?per_page=' + test.perPage;
+			public.getProducts(test.subdomain, test.callback, null, test.perPage);
+			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 		it('should call retrieve with the right url if given a page and perPage', function() {
-			var expectedUrl = testGetProductsUrl + '?page=' + testPage + '&per_page=' + testPerPage;
-			public.getProducts(testSubdomain, testCallback, testPage, testPerPage);
-			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, testCallback);
+			var expectedUrl = test.publicGetProductsUrl + '?page=' + test.page + '&per_page=' + test.perPage;
+			public.getProducts(test.subdomain, test.callback, test.page, test.perPage);
+			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 	});
 
 	describe('#getProduct()', function() {
 		it('should call retrieve with the right url', function() {
-			public.getProduct(testSubdomain, testProductId, testCallback);
-			expect(public.retrieve).toHaveBeenCalledWith(testGetProductUrl, testCallback);
+			public.getProduct(test.subdomain, test.productId, test.callback);
+			expect(public.retrieve).toHaveBeenCalledWith(test.publicGetProductUrl, test.callback);
 		});
 	});
 
 	describe('#getCollections()', function() {
 		it('should call retrieve with the right url', function() {
-			var expectedUrl = testGetCollectionsUrl + '?';
-			public.getCollections(testSubdomain, testCallback);
-			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, testCallback);
+			var expectedUrl = test.publicGetCollectionsUrl + '?';
+			public.getCollections(test.subdomain, test.callback);
+			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 		it('should call retrieve with the right url if given a page', function() {
-			var expectedUrl = testGetCollectionsUrl + '?page=' + testPage + '&';
-			public.getCollections(testSubdomain, testCallback, testPage);
-			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, testCallback);
+			var expectedUrl = test.publicGetCollectionsUrl + '?page=' + test.page + '&';
+			public.getCollections(test.subdomain, test.callback, test.page);
+			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 		it('should call retrieve with the right url if given a perPage', function() {
-			var expectedUrl = testGetCollectionsUrl + '?per_page=' + testPerPage;
-			public.getCollections(testSubdomain, testCallback, null, testPerPage);
-			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, testCallback);
+			var expectedUrl = test.publicGetCollectionsUrl + '?per_page=' + test.perPage;
+			public.getCollections(test.subdomain, test.callback, null, test.perPage);
+			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 		it('should call retrieve with the right url if given a page and perPage', function() {
-			var expectedUrl = testGetCollectionsUrl + '?page=' + testPage + '&per_page=' + testPerPage;
-			public.getCollections(testSubdomain, testCallback, testPage, testPerPage);
-			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, testCallback);
+			var expectedUrl = test.publicGetCollectionsUrl + '?page=' + test.page + '&per_page=' + test.perPage;
+			public.getCollections(test.subdomain, test.callback, test.page, test.perPage);
+			expect(public.retrieve).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 	});
 
 	describe('#getCollection()', function() {
 		it('should call retrieve with the right url', function() {
-			public.getCollection(testSubdomain, testCollectionId, testCallback);
-			expect(public.retrieve).toHaveBeenCalledWith(testGetCollectionUrl, testCallback);
+			public.getCollection(test.subdomain, test.collectionId, test.callback);
+			expect(public.retrieve).toHaveBeenCalledWith(test.publicGetCollectionUrl, test.callback);
 		});
 	});
 });

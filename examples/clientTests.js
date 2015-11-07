@@ -64,6 +64,32 @@ var tests = {
 		});
 	},
 
+	createStoreTemplateTest: function(seClient) {
+		var testName = 'cool template',
+			testContent = '<html></html>',
+			foundTemplate;
+
+		seClient = seClient || tests.seClient;
+		seClient.createStoreTemplate(testName, { content: testContent },
+			function(err, data) {
+				if(err) {
+					return console.log('Create Store Template Failed: ' + err);
+				}
+				seClient.getStoreTemplates(function(err, data) {
+					var templates = JSON.parse(data).data.templates;
+					templates.forEach(function(val) {
+						if(val.name === testName) {
+							foundTemplate = val;
+						}
+					});
+					if(!foundTemplate) {
+						return console.log('Create Store Template Failed, did not create template');
+					}
+					console.log('Create Store Template passed.');
+				});
+		});
+	},
+
 	ordersTest: function(seClient) {
 		seClient = seClient || tests.seClient;
 		seClient.getOrders(function(err, data) { 
@@ -133,6 +159,55 @@ var tests = {
 				console.log('Product Test passed.');
 			else 
 				console.log('Product Test failed with ' + JSON.stringify(obj));
+		});
+	},
+
+	createProductTest: function(seClient) {
+		var testName = 'the ultimate beard shampoo',
+			testCents = '666666',
+			testStatus = 'hidden';
+		seClient = seClient || tests.seClient;
+		seClient.createProduct(testName, testCents, { status: testStatus },
+			function(err, data) {
+				var newProduct = JSON.parse(data);
+				if(newProduct.data.name !== testName &&
+					newProduct.data.cents !== cents) {
+					console.log('Create Product Test failed with ' + JSON.stringify(newProduct));
+				} else {
+					seClient.deleteProduct(newProduct.data.id);
+					console.log('Create Product Test passed.');
+				}
+		});
+	},
+
+	updateProductTest: function(seClient) {
+		var testName = 'the ultimatest beard shampoo',
+			testCents = '777',
+			testStatus = 'hidden';
+		seClient = seClient || tests.seClient;
+		seClient.createProduct(testName, testCents, { status: testStatus },
+			function(err, data) {
+				if(err) {
+					return console.log('Update Product Test failed with ' + err);
+				}
+				var newProduct = JSON.parse(data);
+				seClient.updateProduct(newProduct.data.id, { cents: '666' }, function(err, data) {
+					if(err) {
+						return console.log('Update Product Test failed with ' + err);
+					}
+					try {
+						var newProduct = JSON.parse(data);
+					} catch(ex) {
+						return console.log('Update Product Test failed with ' + ex);
+					}
+					if(newProduct.data.name !== testName &&
+						newProduct.data.cents !== cents) {
+						console.log('Update Product Test failed with ' + JSON.stringify(newProduct));
+					} else {
+						seClient.deleteProduct(newProduct.data.id);
+						console.log('Update Product Test passed.');
+					}
+				});
 		});
 	},
 

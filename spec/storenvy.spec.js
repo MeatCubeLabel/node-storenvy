@@ -1,17 +1,10 @@
 var Storenvy = require('../lib/storenvy.js'),
-	Client = require('../lib/client.js');
+	Client = require('../lib/client.js'),
+	test = require('./support/props.js');
 
 describe('Storenvy', function() {
 
-	var storenvy,
-		testAppId = 'UAA992303KMP',
-		testAppSecret = 'FJ498F91030U0',
-		testRedirect = 'http://meatcube.com',
-		testOauthUrl = 'https://www.storenvy.com/oauth/authorize?client_id=' + testAppId +
-           '&response_type=code' + '&redirect_uri=' + testRedirect + '&scope=user',
-        testAccessToken = 'UU8894iJjkfd998',
-        testRefreshToken = '89FUIS8336F',
-        testExpiresIn = 1000;
+	var storenvy;
 
 	beforeEach(function() {
 		storenvy = new Storenvy({});
@@ -30,47 +23,47 @@ describe('Storenvy', function() {
 
 	describe('#complete()', function() {
 		it('should return true if all creds are accessible', function() {
-			storenvy.creds.appId = testAppId;
-			storenvy.creds.appSecret = testAppSecret;
-			storenvy.creds.redirect = testRedirect;
+			storenvy.creds.appId = test.appId;
+			storenvy.creds.appSecret = test.appSecret;
+			storenvy.creds.redirect = test.redirect;
 			expect(storenvy.complete()).toEqual(true);
 		});
 		it('should return false if app id is missing', function() {
-			storenvy.creds.appSecret = testAppSecret;
-			storenvy.creds.redirect = testRedirect;
+			storenvy.creds.appSecret = test.appSecret;
+			storenvy.creds.redirect = test.redirect;
 			expect(storenvy.complete()).toEqual(false);
 		});
 		it('should return false if app secret is missing', function() {
-			storenvy.creds.appId = testAppId;
-			storenvy.creds.redirect = testRedirect;
+			storenvy.creds.appId = test.appId;
+			storenvy.creds.redirect = test.redirect;
 			expect(storenvy.complete()).toEqual(false);
 		});
 		it('should return false if redirect is missing', function() {
-			storenvy.creds.appId = testAppId;
-			storenvy.creds.appSecret = testAppSecret;
+			storenvy.creds.appId = test.appId;
+			storenvy.creds.appSecret = test.appSecret;
 			expect(storenvy.complete()).toEqual(false);
 		});
 	});
 
 	describe('#buildOauthUrl()', function() {
 		beforeEach(function() {
-			storenvy.creds.appId = testAppId;
-			storenvy.creds.appSecret = testAppSecret;
-			storenvy.creds.redirect = testRedirect;
+			storenvy.creds.appId = test.appId;
+			storenvy.creds.appSecret = test.appSecret;
+			storenvy.creds.redirect = test.redirect;
 		});
 		it('should return the right url if nothing is passed', function() {
-			expect(storenvy.buildOAuthUrl()).toEqual(testOauthUrl);
+			expect(storenvy.buildOAuthUrl()).toEqual(test.OauthUrl);
 		});
 		it('should return the right url if read is passed', function() {
-			var expectedUrl = testOauthUrl + ' store_read';
+			var expectedUrl = test.OauthUrl + ' store_read';
 			expect(storenvy.buildOAuthUrl(true)).toEqual(expectedUrl);
 		});
 		it('should return the right url if write is passed', function() {
-			var expectedUrl = testOauthUrl + ' store_write';
+			var expectedUrl = test.OauthUrl + ' store_write';
 			expect(storenvy.buildOAuthUrl(false, true)).toEqual(expectedUrl);
 		});
 		it('should return the right url if both are passed', function() {
-			var expectedUrl = testOauthUrl + ' store_read store_write';
+			var expectedUrl = test.OauthUrl + ' store_read store_write';
 			expect(storenvy.buildOAuthUrl(true, true)).toEqual(expectedUrl);
 		});
 		it('should return falsy if credentials are not loaded', function() {
@@ -88,28 +81,28 @@ describe('Storenvy', function() {
 	describe('#getClient()', function() {
 		it('should return a new Client object with the right creds', function() {
 			var responseData = {
-				access_token: testAccessToken,
-				refresh_token: testRefreshToken,
-				expires_in: testExpiresIn
+				access_token: test.accessToken,
+				refresh_token: test.refreshToken,
+				expires_in: test.expiresIn
 			},
 			actualClient = storenvy.getClient(JSON.stringify(responseData));
 
 			expect(actualClient).toEqual(jasmine.any(Client));
-			expect(actualClient.creds.access_token).toEqual(testAccessToken);
-			expect(actualClient.creds.refresh_token).toEqual(testRefreshToken);
-			expect(actualClient.creds.expires_in).toEqual(testExpiresIn);
+			expect(actualClient.creds.access_token).toEqual(test.accessToken);
+			expect(actualClient.creds.refresh_token).toEqual(test.refreshToken);
+			expect(actualClient.creds.expires_in).toEqual(test.expiresIn);
 		});
 		it('should also add the creds on the storenvy object', function() {
 			var responseData = {
-				access_token: testAccessToken,
-				refresh_token: testRefreshToken,
-				expires_in: testExpiresIn
+				access_token: test.accessToken,
+				refresh_token: test.refreshToken,
+				expires_in: test.expiresIn
 			},
 			actualClient = storenvy.getClient(JSON.stringify(responseData));
 
-			expect(storenvy.creds.access_token).toEqual(testAccessToken);
-			expect(storenvy.creds.refresh_token).toEqual(testRefreshToken);
-			expect(storenvy.creds.expires_in).toEqual(testExpiresIn);
+			expect(storenvy.creds.access_token).toEqual(test.accessToken);
+			expect(storenvy.creds.refresh_token).toEqual(test.refreshToken);
+			expect(storenvy.creds.expires_in).toEqual(test.expiresIn);
 		});
 	});
 });
