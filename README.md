@@ -1,4 +1,4 @@
-node-storenvy v0.4.0
+node-storenvy v0.4.1
 =============
 [![NPM version](http://img.shields.io/npm/v/storenvy.svg?style=flat)](https://www.npmjs.org/package/storenvy)
 [![Build Status](https://travis-ci.org/ryanmurakami/node-storenvy.svg?branch=develop)](https://travis-ci.org/ryanmurakami/node-storenvy)

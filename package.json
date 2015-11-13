@@ -1,11 +1,12 @@
 {
   "name": "storenvy",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Node wrapper to access the Storenvy API",
   "main": "lib/storenvy.js",
   "scripts": {
-    "preinstall": "npm install -g jasmine",
-    "test": "jasmine"
+    "preinstall": "npm install -g codeclimate-test-reporter",
+    "test": "./node_modules/.bin/istanbul test ./node_modules/.bin/jasmine",
+    "report_coverage": "CODECLIMATE_REPO_TOKEN=73df24499669b3d12d4bdfaec21dbb6c0c0f0834176c8b2a02a7f92b2b2210bc codeclimate-test-reporter <  ./coverage/lcov.info"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,9 @@
   },
   "homepage": "https://github.com/ryanmurakami/node-storenvy",
   "devDependencies": {
-    "jasmine-core": "^2.2.0"
+    "istanbul": "^0.4.0",
+    "jasmine": "^2.3.2",
+    "jasmine-core": "^2.2.0",
+    "nock": "^2.17.0"
   }
 }
