@@ -1,3 +1,4 @@
 node_modules/
+coverage/
 examples/creds.json
 npm-debug.log
