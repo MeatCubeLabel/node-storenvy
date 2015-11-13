@@ -994,32 +994,28 @@ describe('Client', function() {
 		it('should call post with the right url', function() {
 			var name = 'my cool store',
 				subdomain = 'teh_cool3st',
-				paypal_email = 'payme@snailmail.com',
 				owner_login = 'unome',
 				owner_email = 'myemail@snailmail.com',
 				owner_password = 'p@ssw0rd',
 				expectedUrl = test.createAccountUrl + test.credAccessToken + '&client_id=' +
 					test.clientId + '&secret=' + test.secret + '&name=' + e(name) +
-					'&subdomain=' + subdomain + '&paypal_email=' + e(paypal_email) +
-					'&owner[login]=' + owner_login + '&owner[email]=' + e(owner_email) +
-					'&owner[password]=' + e(owner_password);
-			client.createAccount(name, subdomain, paypal_email, owner_login, owner_email,
+					'&subdomain=' + subdomain + '&owner%5Blogin%5D=' + owner_login + '&owner%5Bemail%5D=' + e(owner_email) +
+					'&owner%5Bpassword%5D=' + e(owner_password);
+			client.createAccount(name, subdomain, owner_login, owner_email,
 				owner_password, test.callback);
 			expect(client.post).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
 		it('should call post with the right url with a passed access token', function() {
 			var name = 'my cool store',
 				subdomain = 'teh_cool3st',
-				paypal_email = 'payme@snailmail.com',
 				owner_login = 'unome',
 				owner_email = 'myemail@snailmail.com',
 				owner_password = 'p@ssw0rd',
 				expectedUrl = test.createAccountUrl + test.accessToken + '&client_id=' +
 					test.clientId + '&secret=' + test.secret + '&name=' + e(name) +
-					'&subdomain=' + subdomain + '&paypal_email=' + e(paypal_email) +
-					'&owner[login]=' + owner_login + '&owner[email]=' + e(owner_email) +
-					'&owner[password]=' + e(owner_password);
-			client.createAccount(name, subdomain, paypal_email, owner_login, owner_email,
+					'&subdomain=' + subdomain + '&owner%5Blogin%5D=' + owner_login + '&owner%5Bemail%5D=' + e(owner_email) +
+					'&owner%5Bpassword%5D=' + e(owner_password);
+			client.createAccount(name, subdomain, owner_login, owner_email,
 				owner_password, test.callback, test.accessToken);
 			expect(client.post).toHaveBeenCalledWith(expectedUrl, test.callback);
 		});
