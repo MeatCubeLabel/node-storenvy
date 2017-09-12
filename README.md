@@ -5,21 +5,21 @@ node-storenvy v0.4.1
 [![Code Climate](https://codeclimate.com/github/ryanmurakami/node-storenvy/badges/gpa.svg)](https://codeclimate.com/github/ryanmurakami/node-storenvy)
 [![Test Coverage](https://codeclimate.com/github/ryanmurakami/node-storenvy/badges/coverage.svg)](https://codeclimate.com/github/ryanmurakami/node-storenvy)
 [![Inline docs](http://inch-ci.org/github/ryanmurakami/node-storenvy.svg?branch=master)](http://inch-ci.org/github/ryanmurakami/node-storenvy)
-####A Node wrapper to the Storenvy API
+#### A Node wrapper to the Storenvy API
 Supports OAuth 2 authentication.
 
-##Changes in v0.4.0
+## Changes in v0.4.0
 - All endpoints implemented
 - Fully unit tested suite
 - New build process
 
-##Roadmap
+## Roadmap
 - Simplify API
 - Major refactor
 - Add more examples (express)
 - Write better documentation
 
-#Getting Started
+# Getting Started
 Download node-storenvy via npm
 ```shell
 npm install storenvy
@@ -30,7 +30,7 @@ Add the storenvy module to your project:
 var Storenvy = require('storenvy');
 ```
 
-####Public API Calls
+#### Public API Calls
 To make public API calls, create a new Storenvy object:
 ```js
 var storenvy = new Storenvy();
@@ -44,7 +44,7 @@ storenvy.public.getStoreInfo('meatcube', function(err, data) {
 });
 ```
 
-####Authenticated API Calls
+#### Authenticated API Calls
 Authenticated calls are a little trickier. You will need to sign up for a developer account with Storenvy to get an Application ID and Application Secret. 
 Sign up here: https://developers.storenvy.com
 
